@@ -1,0 +1,36 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Cambia a "master" si esa es tu rama principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Copy files to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: root
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "."
+        target: "/root/backend-digiturno"
+
+    - name: Deploy on EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: root
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /root/backend-digiturno
+          ./mvnw clean package -DskipTests
+          docker build -t backend-digiturno .
+          docker stop backend || true && docker rm backend || true
+          docker run -d --name backend -p 8080:8080 backend-digiturno
