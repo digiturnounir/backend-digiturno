@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # Cambia a "master" si tu rama principal es esa
+      - main
 
 jobs:
   deploy:
@@ -40,6 +40,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ec2-user/backend-digiturno
+          chmod +x mvnw  # ✅ Agregado: da permisos de ejecución
           ./mvnw clean package -DskipTests
           docker build -t backend-digiturno .
           docker stop backend || true && docker rm backend || true
