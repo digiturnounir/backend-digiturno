@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import com.unir.backend.turno.backend_digiturno.repositories.TurnoRepository;
 @Service
 public class TurnoServiceImpl implements TurnoService{
 
+    @Autowired
     private TurnoRepository repository;
 
     @Override
