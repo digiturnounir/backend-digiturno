@@ -17,20 +17,21 @@ jobs:
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.EC2_HOST }}
-        username: root
+        username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         source: "."
-        target: "/root/backend-digiturno"
+        target: "/home/ec2-user/backend-digiturno"
 
     - name: Deploy on EC2
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.EC2_HOST }}
-        username: root
+        username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /root/backend-digiturno
+          cd /home/ec2-user/backend-digiturno
           ./mvnw clean package -DskipTests
           docker build -t backend-digiturno .
-          docker stop backend || true && docker rm backend || true
+          docker stop backend || true
+          docker rm backend || true
           docker run -d --name backend -p 8080:8080 backend-digiturno
