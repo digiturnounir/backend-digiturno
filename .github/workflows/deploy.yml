@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - main  # Cambia a "master" si tu rama principal es esa
 
 jobs:
   deploy:
@@ -13,13 +13,14 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Clean target folder on EC2
+    - name: Clean previous deployment on EC2
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          sudo chown -R ec2-user:ec2-user /home/ec2-user/backend-digiturno || true
           rm -rf /home/ec2-user/backend-digiturno
 
     - name: Copy files to EC2
@@ -41,6 +42,5 @@ jobs:
           cd /home/ec2-user/backend-digiturno
           ./mvnw clean package -DskipTests
           docker build -t backend-digiturno .
-          docker stop backend || true
-          docker rm backend || true
+          docker stop backend || true && docker rm backend || true
           docker run -d --name backend -p 8080:8080 backend-digiturno
