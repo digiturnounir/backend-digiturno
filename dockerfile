@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
 # Copia el JAR al contenedor
-COPY target/backend-digiturno-0.0.1-SNAPSHOT.jar app.jar
+COPY target/*.jar app.jar
 
 # Expone el puerto que usas (ajusta si es diferente)
 EXPOSE 8080
