@@ -40,11 +40,25 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ec2-user/backend-digiturno
-          echo "JAVA VERSION:"
-          java -version
-          echo "JAVA_HOME: $JAVA_HOME"
+          
+          echo "🔧 JAVA VERSION:"
+          java -version || echo "⚠️ No se pudo verificar la versión de Java"
+
+          echo "✅ Dando permisos a mvnw"
           chmod +x mvnw
+
+          echo "📦 Compilando proyecto con Maven..."
           ./mvnw clean package -DskipTests
+
+          echo "📂 Verificando contenido del directorio target/"
+          ls -l target/
+
+          echo "🐳 Construyendo imagen Docker..."
           docker build -t backend-digiturno .
-          docker stop backend || true && docker rm backend || true
+
+          echo "🛑 Deteniendo y eliminando contenedor anterior si existe..."
+          docker stop backend || true
+          docker rm backend || true
+
+          echo "🚀 Ejecutando nuevo contenedor..."
           docker run -d --name backend -p 8080:8080 backend-digiturno
