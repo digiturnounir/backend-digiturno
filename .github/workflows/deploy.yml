@@ -40,7 +40,10 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ec2-user/backend-digiturno
-          chmod +x mvnw  # ✅ Agregado: da permisos de ejecución
+          echo "JAVA VERSION:"
+          java -version
+          echo "JAVA_HOME: $JAVA_HOME"
+          chmod +x mvnw
           ./mvnw clean package -DskipTests
           docker build -t backend-digiturno .
           docker stop backend || true && docker rm backend || true
