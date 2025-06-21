@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService{
         return Optional.empty();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public User save(User user) {
         return repository.save(user);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void remove(Long id) {
         repository.deleteById(id);
     }

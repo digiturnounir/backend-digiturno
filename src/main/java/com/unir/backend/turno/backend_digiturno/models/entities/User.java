@@ -1,5 +1,6 @@
 package com.unir.backend.turno.backend_digiturno.models.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ public class User {
     private String correo;
     private String contrasena;
     private String rol;
-    private LocalDateTime creado_en;
+    private LocalDate creado_en;
     
     public Long getId() {
         return id;
@@ -52,10 +53,10 @@ public class User {
     public void setRol(String rol) {
         this.rol = rol;
     }
-    public LocalDateTime getCreado_en() {
+    public LocalDate  getCreado_en() {
         return creado_en;
     }
-    public void setCreado_en(LocalDateTime creado_en) {
+    public void setCreado_en(LocalDate  creado_en) {
         this.creado_en = creado_en;
     }
 
