@@ -58,4 +58,8 @@ public class UserServiceImpl implements UserService{
         repository.deleteById(id);
     }
 
+    public Optional<User> findByCorreo(String correo){
+        return repository.findByCorreo(correo);
+    }
+
 }
