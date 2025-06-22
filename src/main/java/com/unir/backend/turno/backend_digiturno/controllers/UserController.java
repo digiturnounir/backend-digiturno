@@ -42,8 +42,14 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody User user){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+        try {
+            User nuevoUsuario = service.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id){

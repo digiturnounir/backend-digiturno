@@ -52,9 +52,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User user) {
+        if (repository.findByCorreo(user.getCorreo()).isPresent()) {
+            throw new IllegalArgumentException("El correo ya está registrado.");
+        }
         user.setContrasena(passwordEncoder.encode(user.getContrasena()));
         return repository.save(user);
     }
+
 
     @Override
     @Transactional
