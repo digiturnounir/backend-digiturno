@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,17 +25,28 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        System.out.println("Correo recibido: " + request.getCorreo());
-        System.out.println("Contraseña recibida: " + request.getContrasena());
-        Optional<User> userOptional = userService.findByCorreo(request.getCorreo());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        if (userOptional.isPresent() && userOptional.get().getContrasena().equals(request.getContrasena())) {
-            String token = jwtUtil.generateToken(request.getCorreo());
+    @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    System.out.println("Correo recibido: " + request.getCorreo());
+    System.out.println("Contraseña recibida: " + request.getContrasena());
+    
+    Optional<User> userOptional = userService.findByCorreo(request.getCorreo());
+
+    if (userOptional.isPresent()) {
+        User user = userOptional.get();
+
+        if (passwordEncoder.matches(request.getContrasena(), user.getContrasena())) {
+            String token = jwtUtil.generateToken(user.getCorreo());
             return ResponseEntity.ok().body("{\"token\": \"" + token + "\"}");
         } else {
-            return ResponseEntity.status(401).body("Credenciales inválidas");
+            return ResponseEntity.status(401).body("Contraseña incorrecta.");
         }
+    } else {
+        return ResponseEntity.status(401).body("Correo no encontrado.");
     }
+}
+
 }
