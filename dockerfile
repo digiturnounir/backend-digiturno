@@ -1,14 +1,19 @@
-# Imagen base con Java 21
-FROM eclipse-temurin:21-jdk
+# Etapa 1: compilar el proyecto
+FROM eclipse-temurin:21-jdk as build
 
-# Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia el JAR al contenedor
-COPY target/*.jar app.jar
+COPY . .
 
-# Expone el puerto que usas (ajusta si es diferente)
+RUN ./mvnw clean package -DskipTests
+
+# Etapa 2: crear imagen ligera solo con el JAR
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Comando para ejecutar la app
 ENTRYPOINT ["java", "-jar", "app.jar"]
