@@ -10,35 +10,45 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuario")
-public class User {
+@Table(name = "entidad")
+public class Entidad {
 
     @Id
     @Generated()
-    @Column(name = "idusuario", updatable = false, insertable = false)
+    @Column(name = "identidad", updatable = false, insertable = false)
+    private Long identidad;
+    
+    @Column(name = "idusuario", nullable = false, unique = true)
     private Long idUsuario;
 
-    @Column(nullable = false)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
-    private String apellido;
+    @Column(name = "descripcion")
+    private String descripcion;
 
-    @Column(nullable = false, unique = true)
-    private String correo;
-
-    @Column(nullable = false)
-    private String contrasena;
-
+    @Column(name = "telefono")
     private String telefono;
 
+    @Column(name = "correo")
+    private String correo;
+
+    @Column(name = "direccion")
     private String direccion;
 
-    @Column(name = "idtipousuario", nullable = false)
-    private Long idTipoUsuario;
+    @Column(name = "estado")
+    private String estado;
 
     @Column(name = "fechcrea")
-    private LocalDateTime  fechcrea;
+    private LocalDateTime fechcrea;
+
+    public Long getIdentidad() {
+        return identidad;
+    }
+
+    public void setIdentidad(Long identidad) {
+        this.identidad = identidad;
+    }
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -56,28 +66,12 @@ public class User {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getTelefono() {
@@ -88,6 +82,14 @@ public class User {
         this.telefono = telefono;
     }
 
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
     public String getDireccion() {
         return direccion;
     }
@@ -96,12 +98,12 @@ public class User {
         this.direccion = direccion;
     }
 
-    public Long getIdTipoUsuario() {
-        return idTipoUsuario;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setIdTipoUsuario(Long idTipoUsuario) {
-        this.idTipoUsuario = idTipoUsuario;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public LocalDateTime getFechcrea() {
@@ -111,6 +113,6 @@ public class User {
     public void setFechcrea(LocalDateTime fechcrea) {
         this.fechcrea = fechcrea;
     }
-    
-    
+
+
 }

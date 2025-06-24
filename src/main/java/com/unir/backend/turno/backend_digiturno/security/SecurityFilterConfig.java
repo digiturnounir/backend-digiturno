@@ -15,6 +15,7 @@ public class SecurityFilterConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll() // permite /auth y /users sin autenticación
                 .requestMatchers("/users/**").permitAll() // permite /auth y /users sin autenticación
+                .requestMatchers("/entidad/**").permitAll()
                 .anyRequest().authenticated() // cualquier otra ruta sí requiere auth
             );
         return http.build();
