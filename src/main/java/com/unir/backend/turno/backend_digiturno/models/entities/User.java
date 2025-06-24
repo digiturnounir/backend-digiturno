@@ -1,64 +1,117 @@
 package com.unir.backend.turno.backend_digiturno.models.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.Generated;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuarios")
+
+@Table(name = "usuario")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Generated()
+    @Column(name = "idusuario", updatable = false, insertable = false)
+    private Long idUsuario;
 
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
+
+    @Column(nullable = false, unique = true)
     private String correo;
+
+    @Column(nullable = false)
     private String contrasena;
-    private String rol;
-    private LocalDate creado_en;
-    
-    public Long getId() {
-        return id;
+
+    private String telefono;
+
+    private String direccion;
+
+    @Column(name = "idtipousuario", nullable = false)
+    private Long idTipoUsuario;
+
+    @Column(name = "fechcrea")
+    private LocalDateTime  fechcrea;
+
+    public Long getIdUsuario() {
+        return idUsuario;
     }
-    public void setId(Long id) {
-        this.id = id;
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
     public String getCorreo() {
         return correo;
     }
+
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
     public String getContrasena() {
         return contrasena;
     }
+
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-    public String getRol() {
-        return rol;
-    }
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-    public LocalDate  getCreado_en() {
-        return creado_en;
-    }
-    public void setCreado_en(LocalDate  creado_en) {
-        this.creado_en = creado_en;
+
+    public String getTelefono() {
+        return telefono;
     }
 
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Long getIdTipoUsuario() {
+        return idTipoUsuario;
+    }
+
+    public void setIdTipoUsuario(Long idTipoUsuario) {
+        this.idTipoUsuario = idTipoUsuario;
+    }
+
+    public LocalDateTime getFechcrea() {
+        return fechcrea;
+    }
+
+    public void setFechcrea(LocalDateTime fechcrea) {
+        this.fechcrea = fechcrea;
+    }
+    
     
 }

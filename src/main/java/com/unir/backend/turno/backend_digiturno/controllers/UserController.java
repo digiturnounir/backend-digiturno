@@ -26,22 +26,21 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public List<User> list(){
+    public List<User> list() {
         return service.finAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id){
+    public ResponseEntity<?> show(@PathVariable Long id) {
         Optional<User> userOptional = service.findById(id);
-        
-        if(userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody User user){
+    public ResponseEntity<?> create(@RequestBody User user) {
         try {
             User nuevoUsuario = service.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
@@ -50,25 +49,22 @@ public class UserController {
         }
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id){
+    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id) {
         Optional<User> o = service.update(user, id);
-        if(o.isPresent()){
+        if (o.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable Long id){
+    public ResponseEntity<?> remove(@PathVariable Long id) {
         Optional<User> o = service.findById(id);
-
-        if(o.isPresent()){
+        if (o.isPresent()) {
             service.remove(id);
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.notFound().build();
     }
 }

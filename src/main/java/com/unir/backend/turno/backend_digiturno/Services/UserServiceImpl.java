@@ -1,5 +1,6 @@
 package com.unir.backend.turno.backend_digiturno.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,13 +39,17 @@ public class UserServiceImpl implements UserService {
     public Optional<User> update(User user, Long id) {
         Optional<User> o = this.findById(id);
         if (o.isPresent()) {
-            User userDb = o.orElseThrow();
+            User userDb = o.get();
             userDb.setNombre(user.getNombre());
+            userDb.setApellido(user.getApellido());
             userDb.setCorreo(user.getCorreo());
             userDb.setContrasena(passwordEncoder.encode(user.getContrasena()));
-            userDb.setRol(user.getRol());
-            userDb.setCreado_en(user.getCreado_en());
-            return Optional.of(this.save(userDb));
+            userDb.setTelefono(user.getTelefono());
+            userDb.setDireccion(user.getDireccion());
+            userDb.setIdTipoUsuario(user.getIdTipoUsuario());
+            userDb.setFechcrea(LocalDateTime.now());
+            // fechCrea no se actualiza, se mantiene la fecha original de creación
+            return Optional.of(repository.save(userDb));
         }
         return Optional.empty();
     }
@@ -56,6 +61,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("El correo ya está registrado.");
         }
         user.setContrasena(passwordEncoder.encode(user.getContrasena()));
+        user.setFechcrea(LocalDateTime.now());
         return repository.save(user);
     }
 
