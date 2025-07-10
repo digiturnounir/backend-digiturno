@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unir.backend.turno.backend_digiturno.Services.EntidadService;
 import com.unir.backend.turno.backend_digiturno.models.entities.Entidad;
+import com.unir.backend.turno.backend_digiturno.response.ApiResponse;
 
 @RestController
 @RequestMapping("/entidad")
@@ -26,46 +27,51 @@ public class EntidadController {
     private EntidadService service;
 
     @GetMapping
-    public List<Entidad> list(){
-        return service.finAll();
+    public ResponseEntity<ApiResponse<List<Entidad>>> list() {
+        return ResponseEntity.ok(
+            new ApiResponse<>(true, "Lista de entidades", 2000, service.finAll())
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id){
-        Optional<Entidad> entidadOptional = service.findById(id);
-        if(entidadOptional.isPresent()){
-            return ResponseEntity.ok(entidadOptional.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<?>> show(@PathVariable Long id) {
+        return service.findById(id)
+                .<ResponseEntity<ApiResponse<?>>>map(entidad ->
+                        ResponseEntity.ok(new ApiResponse<>(true, "Entidad encontrada", 2000, entidad)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(false, "Entidad no encontrada", 4040, null)));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Entidad entidad){
-        try{
-            Entidad nuevoEntidad = service.save(entidad);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEntidad);
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    public ResponseEntity<ApiResponse<?>> create(@RequestBody Entidad entidad) {
+        try {
+            Entidad nuevo = service.save(entidad);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(true, "Entidad creada", 2010, nuevo));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(false, e.getMessage(), 4000, null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Entidad entidad, @PathVariable Long id) {
-        Optional<Entidad> o = service.update(entidad, id);
-        if (o.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<?>> update(@RequestBody Entidad entidad, @PathVariable Long id) {
+        return service.update(entidad, id)
+                .<ResponseEntity<ApiResponse<?>>>map(e ->
+                        ResponseEntity.ok(new ApiResponse<>(true, "Entidad actualizada", 2001, e)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(false, "Entidad no encontrada", 4041, null)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<?>> remove(@PathVariable Long id) {
         Optional<Entidad> o = service.findById(id);
         if (o.isPresent()) {
             service.remove(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ApiResponse<>(true, "Entidad eliminada", 2002, null));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(false, "Entidad no encontrada", 4042, null));
     }
 
 }

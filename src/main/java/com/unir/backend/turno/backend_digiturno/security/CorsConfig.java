@@ -15,9 +15,12 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("https://digiturno.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");
+                        .allowedHeaders("Content-Type", "Authorization");
                         //.allowCredentials(true); // si estás manejando cookies o sesiones
             }
         };
+
+
+        
     }
 }

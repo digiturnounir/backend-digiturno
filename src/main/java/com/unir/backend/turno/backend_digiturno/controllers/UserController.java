@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unir.backend.turno.backend_digiturno.Services.UserService;
 import com.unir.backend.turno.backend_digiturno.models.entities.User;
+import com.unir.backend.turno.backend_digiturno.response.ApiResponse;
 
 @RestController
 @RequestMapping("/users")
@@ -25,46 +26,49 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @GetMapping
-    public List<User> list() {
-        return service.finAll();
+   @GetMapping
+    public ResponseEntity<ApiResponse<List<User>>> list() {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Lista de usuarios", 2000, service.finAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        Optional<User> userOptional = service.findById(id);
-        if (userOptional.isPresent()) {
-            return ResponseEntity.ok(userOptional.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<?>> show(@PathVariable Long id) {
+        return service.findById(id)
+                .<ResponseEntity<ApiResponse<?>>>map(user ->
+                        ResponseEntity.ok(new ApiResponse<>(true, "Usuario encontrado", 2000, user)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(false, "Usuario no encontrado", 4040, null)));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<?>> create(@RequestBody User user) {
         try {
-            User nuevoUsuario = service.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+            User nuevo = service.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(true, "Usuario creado", 2010, nuevo));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(false, e.getMessage(), 4000, null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id) {
-        Optional<User> o = service.update(user, id);
-        if (o.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<?>> update(@RequestBody User user, @PathVariable Long id) {
+        return service.update(user, id)
+                .<ResponseEntity<ApiResponse<?>>>map(u ->
+                        ResponseEntity.ok(new ApiResponse<>(true, "Usuario actualizado", 2001, u)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(false, "Usuario no encontrado", 4041, null)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<?>> remove(@PathVariable Long id) {
         Optional<User> o = service.findById(id);
         if (o.isPresent()) {
             service.remove(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ApiResponse<>(true, "Usuario eliminado", 2002, null));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(false, "Usuario no encontrado", 4042, null));
     }
 }
