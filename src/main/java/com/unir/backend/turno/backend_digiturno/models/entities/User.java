@@ -21,7 +21,7 @@ public class User {
     @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column()
     private String apellido;
 
     @Column(nullable = false, unique = true)

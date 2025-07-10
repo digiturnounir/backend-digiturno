@@ -18,10 +18,10 @@ public class Entidad {
     @Column(name = "identidad", updatable = false, insertable = false)
     private Long identidad;
     
-    @Column(name = "idusuario", nullable = false, unique = true)
+    @Column(name = "idusuario", nullable = false)
     private Long idUsuario;
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre")
     private String nombre;
 
     @Column(name = "descripcion")
