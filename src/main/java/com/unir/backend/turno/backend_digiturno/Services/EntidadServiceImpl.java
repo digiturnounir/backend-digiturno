@@ -33,8 +33,17 @@ public class EntidadServiceImpl implements EntidadService{
     @Override
     @Transactional
     public Entidad save(Entidad entidad) {
+        if (entidad.getIdUsuario() != null && repository.findByIdUsuario(entidad.getIdUsuario()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe una entidad registrada con este idUsuario.");
+        }
+
+        if (entidad.getCorreo() != null && repository.findByCorreo(entidad.getCorreo()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe una entidad registrada con este correo.");
+        }
+
         return repository.save(entidad);
     }
+
 
     @Override
     @Transactional
