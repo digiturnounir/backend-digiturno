@@ -13,14 +13,11 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://digiturno.vercel.app")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("Content-Type", "Authorization");
-                        //.allowCredentials(true); // si estás manejando cookies o sesiones
+                        .allowedOrigins("*") // Permitir todos los orígenes
+                        .allowedMethods("*") // Permitir todos los métodos HTTP
+                        .allowedHeaders("*"); // Permitir todos los encabezados
+                        //.allowCredentials(true); // OJO: No se puede usar allowCredentials(true) con allowedOrigins("*")
             }
         };
-
-
-        
     }
 }
