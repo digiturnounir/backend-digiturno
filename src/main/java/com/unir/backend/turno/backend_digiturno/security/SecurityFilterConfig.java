@@ -12,13 +12,7 @@ public class SecurityFilterConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // permite /auth y /users sin autenticación
-                .requestMatchers("/users/**").permitAll() // permite /auth y /users sin autenticación
-                .requestMatchers("/entidad/**").permitAll()
-                .requestMatchers("/turnos/**").permitAll()
-                .anyRequest().authenticated() // cualquier otra ruta sí requiere auth
-            );
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // TODO: eliminar esto en producción
         return http.build();
     }
 }

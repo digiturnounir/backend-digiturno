@@ -3,6 +3,9 @@ package com.unir.backend.turno.backend_digiturno.models.entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.hibernate.annotations.Generated;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,21 +17,22 @@ import jakarta.persistence.Table;
 public class Turno {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Generated()
+    @Column(name = "id_turno", updatable = false, insertable = false)
+    private Long idTurno;
 
     private Integer negocio_id;
     private Integer cliente_id;
     private LocalDate fecha;
     private LocalTime  hora;
-    private String estado;
+    private String estado_id;
     private LocalDate creado_en;
 
-    public Long getId() {
-        return id;
+    public Long getIdTurno() {
+        return idTurno;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdTurno(Long idTurno) {
+        this.idTurno = idTurno;
     }
     public Integer getNegocio_id() {
         return negocio_id;
@@ -54,11 +58,11 @@ public class Turno {
     public void setHora(LocalTime hora) {
         this.hora = hora;
     }
-    public String getEstado() {
-        return estado;
+    public String getEstado_id() {
+        return estado_id;
     }
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstado_id(String estado_id) {
+        this.estado_id = estado_id;
     }
     public LocalDate getCreado_en() {
         return creado_en;

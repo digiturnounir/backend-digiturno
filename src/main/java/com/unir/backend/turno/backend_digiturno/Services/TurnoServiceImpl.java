@@ -39,7 +39,7 @@ public class TurnoServiceImpl implements TurnoService{
             turnoDb.setCliente_id(turno.getCliente_id());
             turnoDb.setFecha(turno.getFecha());
             turnoDb.setHora(turno.getHora());
-            turnoDb.setEstado(turno.getEstado());
+            turnoDb.setEstado_id(turno.getEstado_id());
             turnoDb.setCreado_en(turno.getCreado_en());
             return Optional.of(this.save(turnoDb));
         }

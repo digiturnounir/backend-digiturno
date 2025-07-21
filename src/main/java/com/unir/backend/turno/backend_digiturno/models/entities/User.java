@@ -1,44 +1,33 @@
 package com.unir.backend.turno.backend_digiturno.models.entities;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Generated;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios", schema = "dgt") // usa esquema explícitamente si estás fuera del esquema por defecto
 public class User {
 
     @Id
     @Generated()
-    @Column(name = "idusuario", updatable = false, insertable = false)
+    @Column(name = "id_usuario", updatable = false, insertable = false)
     private Long idUsuario;
 
-    @Column(nullable = false)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column()
-    private String apellido;
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "correo", nullable = false, unique = true)
     private String correo;
 
-    @Column(nullable = false)
+    @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
-    private String telefono;
+    @Column(name = "rol_id", nullable = false)
+    private Long rolId;
 
-    private String direccion;
-
-    @Column(name = "idtipousuario", nullable = false)
-    private Long idTipoUsuario;
-
-    @Column(name = "fechcrea")
-    private LocalDateTime  fechcrea;
+    @Column(name = "creado_en")
+    private LocalDateTime creadoEn;
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -54,14 +43,6 @@ public class User {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
     }
 
     public String getCorreo() {
@@ -80,37 +61,20 @@ public class User {
         this.contrasena = contrasena;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public Long getRolId() {
+        return rolId;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setRolId(Long rolId) {
+        this.rolId = rolId;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setCreadoEn(LocalDateTime creadoEn) {
+        this.creadoEn = creadoEn;
     }
 
-    public Long getIdTipoUsuario() {
-        return idTipoUsuario;
-    }
-
-    public void setIdTipoUsuario(Long idTipoUsuario) {
-        this.idTipoUsuario = idTipoUsuario;
-    }
-
-    public LocalDateTime getFechcrea() {
-        return fechcrea;
-    }
-
-    public void setFechcrea(LocalDateTime fechcrea) {
-        this.fechcrea = fechcrea;
-    }
-    
-    
 }

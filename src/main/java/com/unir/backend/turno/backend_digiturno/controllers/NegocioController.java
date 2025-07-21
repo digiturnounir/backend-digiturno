@@ -15,39 +15,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unir.backend.turno.backend_digiturno.Services.EntidadService;
-import com.unir.backend.turno.backend_digiturno.models.entities.Entidad;
+import com.unir.backend.turno.backend_digiturno.Services.NegocioService;
+import com.unir.backend.turno.backend_digiturno.models.entities.Negocio;
 import com.unir.backend.turno.backend_digiturno.response.ApiResponse;
 
 @RestController
-@RequestMapping("/entidad")
-public class EntidadController {
+@RequestMapping("/negocio")
+public class NegocioController {
 
     @Autowired
-    private EntidadService service;
+    private NegocioService service;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Entidad>>> list() {
+    public ResponseEntity<ApiResponse<List<Negocio>>> list() {
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Lista de entidades", 2000, service.finAll())
+            new ApiResponse<>(true, "Lista de negocios", 2000, service.finAll())
         );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> show(@PathVariable Long id) {
         return service.findById(id)
-                .<ResponseEntity<ApiResponse<?>>>map(entidad ->
-                        ResponseEntity.ok(new ApiResponse<>(true, "Entidad encontrada", 2000, entidad)))
+                .<ResponseEntity<ApiResponse<?>>>map(negocio ->
+                        ResponseEntity.ok(new ApiResponse<>(true, "Negocio encontrado", 2000, negocio)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse<>(false, "Entidad no encontrada", 4040, null)));
+                        .body(new ApiResponse<>(false, "Negocio no encontrada", 4040, null)));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(@RequestBody Entidad entidad) {
+    public ResponseEntity<ApiResponse<?>> create(@RequestBody Negocio negocio) {
         try {
-            Entidad nuevo = service.save(entidad);
+            Negocio nuevo = service.save(negocio);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(true, "Entidad creada", 2010, nuevo));
+                    .body(new ApiResponse<>(true, "Negocio creado", 2010, nuevo));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, e.getMessage(), 4000, null));
@@ -55,23 +55,23 @@ public class EntidadController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> update(@RequestBody Entidad entidad, @PathVariable Long id) {
-        return service.update(entidad, id)
+    public ResponseEntity<ApiResponse<?>> update(@RequestBody Negocio negocio, @PathVariable Long id) {
+        return service.update(negocio, id)
                 .<ResponseEntity<ApiResponse<?>>>map(e ->
-                        ResponseEntity.ok(new ApiResponse<>(true, "Entidad actualizada", 2001, e)))
+                        ResponseEntity.ok(new ApiResponse<>(true, "Negocio actualizado", 2001, e)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse<>(false, "Entidad no encontrada", 4041, null)));
+                        .body(new ApiResponse<>(false, "Negocio no encontrado", 4041, null)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> remove(@PathVariable Long id) {
-        Optional<Entidad> o = service.findById(id);
+        Optional<Negocio> o = service.findById(id);
         if (o.isPresent()) {
             service.remove(id);
-            return ResponseEntity.ok(new ApiResponse<>(true, "Entidad eliminada", 2002, null));
+            return ResponseEntity.ok(new ApiResponse<>(true, "Negocio eliminado", 2002, null));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiResponse<>(false, "Entidad no encontrada", 4042, null));
+                .body(new ApiResponse<>(false, "Negocio no encontrado", 4042, null));
     }
 
 }

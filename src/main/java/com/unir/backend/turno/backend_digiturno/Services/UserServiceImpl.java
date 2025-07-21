@@ -41,13 +41,10 @@ public class UserServiceImpl implements UserService {
         if (o.isPresent()) {
             User userDb = o.get();
             userDb.setNombre(user.getNombre());
-            userDb.setApellido(user.getApellido());
             userDb.setCorreo(user.getCorreo());
             userDb.setContrasena(passwordEncoder.encode(user.getContrasena()));
-            userDb.setTelefono(user.getTelefono());
-            userDb.setDireccion(user.getDireccion());
-            userDb.setIdTipoUsuario(user.getIdTipoUsuario());
-            userDb.setFechcrea(LocalDateTime.now());
+            userDb.setRolId(user.getRolId());
+            userDb.setCreadoEn(LocalDateTime.now());
             // fechCrea no se actualiza, se mantiene la fecha original de creación
             return Optional.of(repository.save(userDb));
         }
@@ -61,7 +58,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("El correo ya está registrado.");
         }
         user.setContrasena(passwordEncoder.encode(user.getContrasena()));
-        user.setFechcrea(LocalDateTime.now());
+        user.setCreadoEn(LocalDateTime.now());
         return repository.save(user);
     }
 
