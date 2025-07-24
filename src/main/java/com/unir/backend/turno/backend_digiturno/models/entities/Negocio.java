@@ -30,8 +30,16 @@ public class Negocio {
     @Column(name = "direccion")
     private String direccion;
 
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    @Column(name = "url_imagen")
+    private String urlImagen;
+
     @Column(name = "creado_en")
     private LocalDateTime fechcrea;
+
+    // Getters y Setters
 
     public Long getIdNegocio() {
         return idNegocio;
@@ -73,6 +81,22 @@ public class Negocio {
         this.direccion = direccion;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
     public LocalDateTime getFechcrea() {
         return fechcrea;
     }
@@ -80,6 +104,4 @@ public class Negocio {
     public void setFechcrea(LocalDateTime fechcrea) {
         this.fechcrea = fechcrea;
     }
-
-    
 }

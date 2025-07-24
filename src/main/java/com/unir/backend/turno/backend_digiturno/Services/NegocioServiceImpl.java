@@ -58,6 +58,8 @@ public class NegocioServiceImpl implements NegocioService {
             negocioDb.setIdCategoria(negocio.getIdCategoria());
             negocioDb.setFechcrea(negocio.getFechcrea());
             negocioDb.setIdUsuario(negocio.getIdUsuario());
+            negocioDb.setDescripcion(negocio.getDescripcion());
+            negocioDb.setUrlImagen(negocio.getUrlImagen());
 
             return Optional.of(repository.save(negocioDb));
         }
